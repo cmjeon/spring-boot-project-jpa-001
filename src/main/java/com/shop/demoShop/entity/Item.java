@@ -39,9 +39,9 @@ public class Item extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private ItemSellStatus itemSellStatus; // 상품 판매 상태
 
-  private LocalDateTime regTime; // 등록 시간
+//  private LocalDateTime regTime; // 등록 시간
 
-  private LocalDateTime updateTime; // 수정 시간
+//  private LocalDateTime updateTime; // 수정 시간
 
   @ManyToMany
   @JoinTable(name = "member_item", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))

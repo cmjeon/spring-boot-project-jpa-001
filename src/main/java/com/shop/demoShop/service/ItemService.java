@@ -15,10 +15,14 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.shop.demoShop.dto.ItemSearchDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+
 @Service
 @Transactional
 @RequiredArgsConstructor
-
 public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemImgService itemImgService;
@@ -75,6 +79,11 @@ public class ItemService {
         }
 
         return item.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getAdminItemPage(itemSearchDto, pageable);
     }
 
 }
