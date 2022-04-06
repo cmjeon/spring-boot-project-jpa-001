@@ -10,11 +10,9 @@
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
-  <script th:inline="javascript">
+<script th:inline="javascript">
 $(document).ready(function(){
-
     calculateToalPrice();
-
     $("#count").change( function(){
         calculateToalPrice();
     });
@@ -106,30 +104,49 @@ function addCart(){
         }
     });
 }
+function order() {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
 
+    var url = "/order";
+    var paramData = {
+        itemId : $("#itemId").val(),
+        count : $("#count").val()
+    };
 
+    var param = JSON.stringify(paramData);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </script>
+    $.ajax({
+        url : url,
+        type : "POST",
+        contentType : "application/json",
+        data : param,
+        beforeSend : function(xhr){
+            /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+            xhr.setRequestHeader(header, token);
+        },
+        dataType : "json",
+        cache: false,
+        success : function(result, status){
+            alert("주문이 완료 되었습니다.");
+            location.href='/';
+        },
+        error : function(jqXHR, status, error) {
+            if(jqXHR.status == '401') {
+                alert('로그인 후 이용해주세요');
+                location.href='/members/login';
+            } else {
+                alert(jqXHR.responseText);
+            }
+        }
+    });
+}
+</script>
 </th:block>
 
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
-  <style>
+<style>
 .mgb-15{
     margin-bottom:15px;
 }
@@ -152,7 +169,7 @@ function addCart(){
     height:auto;
     width:50%;
 }
-  </style>
+</style>
 </th:block>
 
 <div layout:fragment="content" style="margin-left:25%;margin-right:25%">

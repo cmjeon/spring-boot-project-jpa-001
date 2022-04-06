@@ -1,16 +1,16 @@
-// com.shop.demoShop.entity.Item.java
-
 package com.shop.demoShop.entity;
 
 import com.shop.demoShop.constant.ItemSellStatus;
+import com.shop.demoShop.constant.OrderStatus;
 import com.shop.demoShop.dto.ItemFormDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
+
+import com.shop.demoShop.exception.OutOfStockException;
 
 @Entity
 @Table(name = "item")
@@ -54,4 +54,17 @@ public class Item extends BaseEntity {
     this.itemDetail = itemFormDto.getItemDetail();
     this.itemSellStatus = itemFormDto.getItemSellStatus();
   }
+
+  public void removeStock(int stockNumber) {
+    int restStock = this.stockNumber - stockNumber;
+    if(restStock < 0) {
+      throw new OutOfStockException("상품의 재고가 부족합니다. (현재 재고 수량: " + this.stockNumber + ")");
+    }
+    this.stockNumber = restStock;
+  }
+
+  public void addStock(int stockNumber){
+    this.stockNumber += stockNumber;
+  }
+
 }
