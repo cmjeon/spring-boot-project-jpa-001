@@ -10,7 +10,7 @@
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
-<script th:inline="javascript">
+  <script th:inline="javascript">
 $(document).ready(function(){
     calculateToalPrice();
     $("#count").change( function(){
@@ -180,12 +180,13 @@ function addCart(){
         }
     });
 }
-</script>
+
+  </script>
 </th:block>
 
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
-<style>
+  <style>
 .mgb-15{
     margin-bottom:15px;
 }
@@ -208,7 +209,8 @@ function addCart(){
     height:auto;
     width:50%;
 }
-</style>
+
+  </style>
 </th:block>
 
 <div layout:fragment="content" style="margin-left:25%;margin-right:25%">
@@ -224,7 +226,7 @@ function addCart(){
                   class="badge badge-primary mgb-15">
                 판매중
             </span>
-      <span th:unless="${item.itemSellStatus == T(com.shop.demoShop.demoShop.constant.ItemSellStatus).SELL}"
+      <span th:unless="${item.itemSellStatus == T(com.shop.demoShop.constant.ItemSellStatus).SELL}"
             class="badge btn-danger mgb-15">
                 품절
             </span>
