@@ -17,6 +17,8 @@ import java.util.List;
 import com.shop.demoShop.dto.CartDetailDto;
 import org.springframework.ui.Model;
 
+import com.shop.demoShop.dto.CartOrderDto;
+
 @Controller
 @RequiredArgsConstructor
 public class CartController {
@@ -81,6 +83,25 @@ public class CartController {
     cartService.deleteCartItem(cartItemId); // 장바구니에서 상품 삭제
 
     return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
+  }
+
+  @PostMapping(value = "/cart/orders")
+  public @ResponseBody ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto, Principal principal){
+
+    List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
+
+    if(cartOrderDtoList == null || cartOrderDtoList.size() == 0){ // 주문할 상품을 선택하였는지 체크
+      return new ResponseEntity<String>("주문할 상품을 선택해주세요", HttpStatus.FORBIDDEN);
+    }
+
+    for (CartOrderDto cartOrder : cartOrderDtoList) { // 주문권한 체크
+      if(!cartService.validateCartItem(cartOrder.getCartItemId(), principal.getName())){
+        return new ResponseEntity<String>("주문 권한이 없습니다.", HttpStatus.FORBIDDEN);
+      }
+    }
+
+    Long orderId = cartService.orderCartItem(cartOrderDtoList, principal.getName()); // 주문 로직 호출 결과 생성된 주문 번호를 반환
+    return new ResponseEntity<Long>(orderId, HttpStatus.OK); // HTTP 응답 상태 코드 반환
   }
 
 }
