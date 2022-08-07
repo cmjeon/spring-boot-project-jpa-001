@@ -43,10 +43,6 @@ public class Item extends BaseEntity {
 
 //  private LocalDateTime updateTime; // 수정 시간
 
-  @ManyToMany
-  @JoinTable(name = "member_item", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
-  private List<Member> member;
-
   public void updateItem(ItemFormDto itemFormDto) {
     this.itemNm = itemFormDto.getItemNm();
     this.price = itemFormDto.getPrice();
