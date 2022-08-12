@@ -19,6 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CartController.class)
@@ -74,8 +75,8 @@ class CartControllerTest extends BaseMockMvcTest {
     }
 
     @Test
-//    @WithMockUser(username = "user'", roles = "USER")
-    public void 카드_아이템을_조회한다() throws Exception {
+    @WithMockUser(username = "user'", roles = "USER")
+    public void 카트_아이템을_조회한다() throws Exception {
         // given
         List<CartDetailDto> cartDetailList = Arrays.asList(
             new CartDetailDto(1L, "아이템1", 1000, 1, ""),
@@ -86,6 +87,7 @@ class CartControllerTest extends BaseMockMvcTest {
         mockMvc.perform(
             get("/cart")
             )
+            .andDo(print())
             .andExpect(status().isOk());
     }
 
