@@ -1,15 +1,16 @@
 package com.shop.demoShop.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shop.demoShop.base.BaseMockMvcTest;
 import com.shop.demoShop.dto.CartDetailDto;
 import com.shop.demoShop.dto.CartItemDto;
 import com.shop.demoShop.service.CartService;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,13 +22,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CartController.class)
-class CartControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+@AutoConfigureMockMvc
+@TestPropertySource(locations="classpath:application-test.properties")
+@WithMockUser(username = "user'", roles = "USER")
+class CartControllerTest extends BaseMockMvcTest {
 
     @MockBean
     CartService cartService;
@@ -46,7 +44,7 @@ class CartControllerTest {
     }
 
     @Test
-    @DisplayName("카트 아이템을 주문한다")
+//    @WithMockUser(username = "user'", roles = "USER")
     public void 카트_아이템을_주문한다() throws Exception{
 //        System.out.println("카트_아이템을_주문한다");
 //        MultiValueMap<String, String> cartItem = new LinkedMultiValueMap<>();
@@ -71,24 +69,23 @@ class CartControllerTest {
     }
 
     @Test
-    @DisplayName("카트 아이템을 갱신한다")
     public void 카트_아이템을_갱신한다() {
         System.out.println("카트_아이템을_갱신한다");
     }
 
     @Test
-    @DisplayName("카트 아이템을 조회한다")
+//    @WithMockUser(username = "user'", roles = "USER")
     public void 카드_아이템을_조회한다() throws Exception {
         // given
-        String itemName = "ddd";
         List<CartDetailDto> cartDetailList = Arrays.asList(
             new CartDetailDto(1L, "아이템1", 1000, 1, ""),
             new CartDetailDto(2L, "아이템2", 2000, 2, "")
         );
         given(cartService.getCartList(any(String.class))).willReturn(cartDetailList);
 
-        mockMvc.perform(get("/cart")
-                .param(itemName))
+        mockMvc.perform(
+            get("/cart")
+            )
             .andExpect(status().isOk());
     }
 
