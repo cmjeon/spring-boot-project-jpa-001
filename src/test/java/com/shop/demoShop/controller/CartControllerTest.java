@@ -4,6 +4,7 @@ import com.shop.demoShop.base.BaseMockMvcTest;
 import com.shop.demoShop.dto.CartDetailDto;
 import com.shop.demoShop.dto.CartItemDto;
 import com.shop.demoShop.service.CartService;
+import com.shop.demoShop.service.MemberService;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -31,22 +32,22 @@ class CartControllerTest extends BaseMockMvcTest {
     @MockBean
     CartService cartService;
 
+    @MockBean
+    MemberService memberService;
+
     @BeforeAll
-    public static void 모든_테스트_이전에_실행() {
-        /**
-         * static 으로 선언된 메소드여야 함
-         */
+    static void 모든_테스트_이전에_실행() {
         System.out.println("-- 모든 테스트 이전에 실행\n");
     }
 
     @BeforeEach
-    public void 각_테스트_이전에_실행() {
+    void 각_테스트_이전에_실행() {
         System.out.println("- 각 테스트 이전에 실행");
     }
 
     @Test
 //    @WithMockUser(username = "user'", roles = "USER")
-    public void 카트_아이템을_주문한다() throws Exception{
+    void 카트_아이템을_주문한다() throws Exception{
 //        System.out.println("카트_아이템을_주문한다");
 //        MultiValueMap<String, String> cartItem = new LinkedMultiValueMap<>();
 //
@@ -70,13 +71,13 @@ class CartControllerTest extends BaseMockMvcTest {
     }
 
     @Test
-    public void 카트_아이템을_갱신한다() {
+    void 카트_아이템을_갱신한다() {
         System.out.println("카트_아이템을_갱신한다");
     }
 
     @Test
-    @WithMockUser(username = "user'", roles = "USER")
-    public void 카트_아이템을_조회한다() throws Exception {
+//    @WithMockUser(username = "user'", roles = "USER")
+    void 카트_아이템을_조회한다() throws Exception {
         // given
         List<CartDetailDto> cartDetailList = Arrays.asList(
             new CartDetailDto(1L, "아이템1", 1000, 1, ""),
@@ -92,12 +93,12 @@ class CartControllerTest extends BaseMockMvcTest {
     }
 
     @AfterEach
-    public void 각_테스트_이후에_실행() {
+    void 각_테스트_이후에_실행() {
         System.out.println("- 각 테스트 이후에 실행\n");
     }
 
     @AfterAll
-    public static void 모든_테스트_이후에_실행() {
+    static void 모든_테스트_이후에_실행() {
         /**
          * static 으로 선언된 메소드여야 함
          */
