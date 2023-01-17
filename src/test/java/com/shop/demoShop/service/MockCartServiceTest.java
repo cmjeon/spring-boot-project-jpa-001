@@ -60,7 +60,7 @@ public class MockCartServiceTest {
         List<CartDetailDto> actualCartDetailDtoList = cartService.getCartList(email);
 
         // then
-//        assertThat(actualCartDetailDtoList).isNotN;
+        assertThat(actualCartDetailDtoList).isNotNull();
         assertThat(actualCartDetailDtoList.get(0).getCartItemId()).isEqualTo(1L);
     }
 
